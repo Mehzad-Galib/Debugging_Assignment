@@ -8,6 +8,12 @@ const sliderContainer = document.getElementById('sliders');
 // selected image 
 // let sliders = [];
 
+document.getElementById('search').addEventListener('keypress', function(event) {
+    if (event.key == "Enter") {
+        searchBtn.click();
+    }
+})
+
 
 //created my own api key
 const KEY = '20264095-ec53be0e24674a469c50868dc';
@@ -79,19 +85,23 @@ const createSlider = () => {
     // hide image area
     imagesArea.style.display = 'none';
     const duration = document.getElementById('duration').value || 1000;
-    sliders.forEach(slide => {
-        let item = document.createElement('div')
-        item.className = "slider-item";
-        item.innerHTML = `<img class="w-100"
+    if (duration < 0) {
+        alert("duration cannot be negative, please search again");
+    } else {
+        sliders.forEach(slide => {
+            let item = document.createElement('div')
+            item.className = "slider-item";
+            item.innerHTML = `<img class="w-100"
     src="${slide}"
     alt="">`;
-        sliderContainer.appendChild(item)
-    })
-    changeSlide(0)
-    timer = setInterval(function() {
-        slideIndex++;
-        changeSlide(slideIndex);
-    }, duration);
+            sliderContainer.appendChild(item)
+        })
+        changeSlide(0)
+        timer = setInterval(function() {
+            slideIndex++;
+            changeSlide(slideIndex);
+        }, duration);
+    }
 }
 
 // change slider index 
