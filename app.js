@@ -6,8 +6,8 @@ const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 // selected image 
+// let sliders = [];
 
-let sliders = [];
 
 //created my own api key
 const KEY = '20264095-ec53be0e24674a469c50868dc';
@@ -21,7 +21,7 @@ const showImages = (images) => {
     images.forEach(image => {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.previewURL}") src="${image.previewURL}" alt="${image.tags}">`;
+        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.largeImageURL}") src="${image.webformatURL}" alt="${image.tags}">`;
         gallery.appendChild(div)
     })
 }
@@ -57,7 +57,7 @@ const selectItem = (event, img) => {
 
 var timer;
 
-
+let sliders = [];
 
 const createSlider = () => {
     // check slider image length
