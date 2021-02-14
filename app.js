@@ -28,7 +28,8 @@ const showImages = (images) => {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
         div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.largeImageURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-        gallery.appendChild(div)
+        gallery.appendChild(div);
+
     })
 }
 
@@ -36,10 +37,13 @@ const showImages = (images) => {
 
 const getImages = (query) => {
     fetch(`https://pixabay.com/api/?key=${KEY}&q=${query}&image_type=photo&pretty=true`)
-        .then(response => response.json())
+
+    .then(response => response.json())
         .then(data => showImages(data.hits))
         .catch(error => displayError('Invalid Name!! Please write a proper name and try again!'));
 }
+
+
 
 const displayError = error => {
     const errorTag = document.getElementById('error-message');
@@ -47,23 +51,27 @@ const displayError = error => {
     document.getElementById('images').innerHTML = '';
 }
 
+let sliders = [];
+
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
     let element = event.target;
-    element.classList.add('added');
 
+    // element.classList.add('added');
     let item = sliders.indexOf(img);
     if (item === -1) {
+        element.classList.toggle('added');
         sliders.push(img);
+
     } else {
-        alert('Hey, Already added !')
+        element.classList.toggle('added');
+        sliders.pop(img);
     }
 }
 
-var timer;
 
-let sliders = [];
+var timer;
 
 const createSlider = () => {
     // check slider image length
@@ -87,6 +95,7 @@ const createSlider = () => {
     const duration = document.getElementById('duration').value || 1000;
     if (duration < 0) {
         alert("duration cannot be negative, please search again");
+        imagesArea.style.display = 'block';
     } else {
         sliders.forEach(slide => {
             let item = document.createElement('div')
