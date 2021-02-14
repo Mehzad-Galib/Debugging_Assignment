@@ -1,4 +1,3 @@
-// 
 const imagesArea = document.querySelector('.images');
 const gallery = document.querySelector('.gallery');
 const galleryHeader = document.querySelector('.gallery-header');
@@ -6,11 +5,18 @@ const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 // selected image 
-// let sliders = [];
 
 document.getElementById('search').addEventListener('keypress', function(event) {
     if (event.key == "Enter") {
         searchBtn.click();
+    }
+})
+
+// feature 1: Enter key added on Create Slider Button 
+
+document.getElementById('duration').addEventListener('keypress', function(event) {
+    if (event.key == "Enter") {
+        sliderBtn.click();
     }
 })
 
@@ -27,23 +33,35 @@ const showImages = (images) => {
     images.forEach(image => {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.largeImageURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
         gallery.appendChild(div);
-
+        toggleSpinner(false);
     })
 }
 
 // fetching image from api
 
 const getImages = (query) => {
-    fetch(`https://pixabay.com/api/?key=${KEY}&q=${query}&image_type=photo&pretty=true`)
-
-    .then(response => response.json())
+    const url = `https://pixabay.com/api/?key=${KEY}&q=${query}&image_type=photo&pretty=true`
+    toggleSpinner(true);
+    fetch(url)
+        .then(response => response.json())
         .then(data => showImages(data.hits))
         .catch(error => displayError('Invalid Name!! Please write a proper name and try again!'));
 }
 
+// feature 2: Added Spinner on Search Button
 
+const toggleSpinner = (show) => {
+    const spinner = document.getElementById('loading-spinner');
+    if (show) {
+        spinner.classList.remove('d-none');
+    } else {
+        spinner.classList.add('d-none');
+    }
+}
+
+// If error generates:
 
 const displayError = error => {
     const errorTag = document.getElementById('error-message');
@@ -53,13 +71,12 @@ const displayError = error => {
 
 let sliders = [];
 
-
 let slideIndex = 0;
+
 const selectItem = (event, img) => {
     let element = event.target;
-
-    // element.classList.add('added');
     let item = sliders.indexOf(img);
+
     if (item === -1) {
         element.classList.toggle('added');
         sliders.push(img);
@@ -74,12 +91,16 @@ const selectItem = (event, img) => {
 var timer;
 
 const createSlider = () => {
+
     // check slider image length
+
     if (sliders.length < 2) {
-        alert('Select at least 2 image.')
+        alert('Select at least 2 images.')
         return;
     }
+
     // crate slider previous next area
+
     sliderContainer.innerHTML = '';
     const prevNext = document.createElement('div');
     prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
