@@ -115,7 +115,7 @@ const createSlider = () => {
     imagesArea.style.display = 'none';
     const duration = document.getElementById('duration').value || 1000;
     if (duration < 0) {
-        alert("duration cannot be negative, please search again");
+        alert("Duration cannot be negative, please input a valid number");
         imagesArea.style.display = 'block';
     } else {
         sliders.forEach(slide => {
